@@ -65,13 +65,13 @@ class ParserController extends Controller
     public function parseContent()
     {
         $testPers = DB::table('links')->pluck('link');
-        $fl_arrays = preg_grep("/(dushevoy-ugolok|shtorka|dver-v-proyem|dushevaya-peregorodka)/i", $testPers->toArray());
+        $fl_arrays = preg_grep("/(bide|unitaz|rakovina|pedestal|sidene|chasha-unitaza|bachok)/i", $testPers->toArray());
         foreach ($fl_arrays as $fl_array) {
             $document = new Document($fl_array, true);
             $posts = $document->find('.product-item-detail-properties-name::text');
             $values = $document->find('.product-item-detail-properties-val::text');
             $valuesVendor = $document->find('.product-item-detail-properties-val > a::text');
-            $description = $document->find('.product-item-detail-preview::text');
+            $description = $document->find('.product-item-deta лишil-preview::text');
             $description = implode($description);
             $productName = $document->find('.navigation-title::text');
             $productName = implode($productName);
