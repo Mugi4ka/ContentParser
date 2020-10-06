@@ -21,4 +21,5 @@ Route::get('/', function () {
 Route::get('test', [ParserController::class, 'test']);
 Route::get('sitemapGenerator', [ParserController::class, 'sitemapGenerator']);
 Route::get('xmlAdapt', [ParserController::class, 'xmlAdapt']);
-Route::get('parseContent', [ParserController::class, 'parseContent']);
+Route::get('getContent', [ParserController::class, 'getContent']);
+Route::get('getAllProperties', [ParserController::class, 'getAllProperties']);
