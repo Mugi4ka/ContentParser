@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\SiteMap;
+use App\Http\Requests\ContentRequest;
+use App\Http\Requests\XmlLinkRequest;
 use App\Models\Link;
 use DiDom\Document;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Spatie\Sitemap\SitemapGenerator;
-use Spatie\Sitemap\Tags\Url;
 use Orchestra\Parser\Xml\Facade as XmlParser;
 
 class ParserController extends Controller
 {
-    public function getSiteMap()
+    public function index() {
+        return view('index');
+    }
+
+    public function getSiteMap(XmlLinkRequest $request)
     {
-        $path = storage_path('app/sitemap.xml');
-        SitemapGenerator::create('https://belbagno.ru')
-            ->hasCrawled(function (Url $url) {
-                if ($url->segment(1) == 'product') {
-                    $url->setPriority(1.0);
-                    return $url;
-                } else {
-                    return "";
-                }
-            })
-            ->writeToFile($path);
+        $siteMap = new SiteMap();
+        $a = $siteMap->createSiteMap($request);
+        $this->getLinks();
+
+        return redirect()->route('index');
     }
 
     public function getLinks()
@@ -33,19 +33,25 @@ class ParserController extends Controller
         $itemLinks = [];
         $xml = XmlParser::load(storage_path('app/sitemap.xml'));
         $products = $xml->getContent();
-
         foreach ($products as $product) {
             $itemLinks[] = $product->loc->__toString();
         }
         foreach ($itemLinks as $itemLink) {
-            DB::table('links')->insert(['link' => $itemLink]);
+            try {
+                DB::table('links')->insert(['link' => $itemLink]);
+            }
+            catch (\Exception $exception) {
+                continue;
+            }
         }
+        return redirect()->route('index');
     }
 
-    public function getContent()
+    public function getContent(ContentRequest $request)
     {
+        $keyWords = $request->content;
         $links = Link::get()->pluck('link');
-        $neededLinks = preg_grep("/(unitaz-pristavnoy|unitaz-bezobodkovyy-pristavnoy|unitaz-podvesnoy|unitaz-bezobodkovyy-podvesnoy|unitaz-kompakt-bezobodkovyy|unitaz-bezobodkovyy-kompakt|unitaz-kompakt)/i", $links->toArray());
+        $neededLinks = preg_grep("/($keyWords)/i", $links->toArray());
         foreach ($neededLinks as $neededLink) {
             $document = new Document($neededLink, true);
             $vendor = $document->first('.product-item-detail-properties > div > a::text');
@@ -73,5 +79,7 @@ class ParserController extends Controller
                 }
                 DB::table('contents')->insert($combined);
         }
+
+        return redirect()->route('index');
     }
 }

@@ -14,12 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('test', [ParserController::class, 'test']);
-Route::get('sitemapGenerator', [ParserController::class, 'sitemapGenerator']);
-Route::get('xmlAdapt', [ParserController::class, 'xmlAdapt']);
-Route::get('getContent', [ParserController::class, 'getContent']);
+Route::get('/', [ParserController::class, 'index'])->name('index');
+Route::get('getLinks', [ParserController::class, 'getLinks'])->name('get-links');
+Route::post('getSiteMap', [ParserController::class, 'getSiteMap'])->name('get-site-map');
+Route::post('getContent', [ParserController::class, 'getContent'])->name('get-content');
 Route::get('getAllProperties', [ParserController::class, 'getAllProperties']);
