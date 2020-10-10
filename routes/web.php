@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ParserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ParserController::class, 'index'])->name('index');
-Route::get('getLinks', [ParserController::class, 'getLinks'])->name('get-links');
 Route::post('getSiteMap', [ParserController::class, 'getSiteMap'])->name('get-site-map');
-Route::post('getContent', [ParserController::class, 'getContent'])->name('get-content');
-Route::get('getAllProperties', [ParserController::class, 'getAllProperties']);
+Route::post('getContent', [ContentController::class, 'getContent'])->name('get-content');
