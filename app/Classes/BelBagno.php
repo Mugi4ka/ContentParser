@@ -14,11 +14,27 @@ use App\Interfaces\ContentInterface;
 
 class BelBagno implements ContentInterface
 {
+    private $keyWords;
 
-    public function parseContent($keyWords)
+    public function __construct($keyWords)
     {
+        $this->keyWords = $keyWords;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getKeyWords(): string
+    {
+        return $this->keyWords;
+    }
+
+    public function parseContent()
+    {
+        $resultArray = [];
+        $queryString = $this->getKeyWords();
         $links = Link::get()->pluck('link');
-        $neededLinks = preg_grep("/($keyWords)/i", $links->toArray());
+        $neededLinks = preg_grep("/($queryString)/i", $links->toArray());
         foreach ($neededLinks as $neededLink) {
             $linkImage = [];
             $document = new Document($neededLink, true);
@@ -50,26 +66,9 @@ class BelBagno implements ContentInterface
             $combined['Название'] = $productName;
             $combined['Производитель'] = $vendor;
             $combined['Цена'] = $price;
-            $combined = $combined->toArray();
-            if (DB::table('vendors')->where('name', $vendor)->doesntExist() && !is_null($vendor)) {
-                DB::table('vendors')->insert(['name' => $vendor]);
-            }
-            foreach ($combined as $key => $value) {
-                if (!Schema::hasColumn('contents', $key)) {
-                    Schema::table('contents', function (Blueprint $table) use ($key) {
-                        if ($key == 'Артикул') {
-                            $table->string('Артикул')->unique();
-                        } else {
-                            $table->text($key)->nullable();
-                        }
-                    });
-                }
-            }
-            try {
-                DB::table('contents')->insert($combined);
-            } catch (QueryException $e) {
-                continue;
-            }
+            $resultArray[] = $combined->toArray();
         }
+
+        return $resultArray;
     }
 }
