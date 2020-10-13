@@ -32,6 +32,7 @@ class BelBagno implements ContentInterface
     public function parseContent()
     {
         $resultArray = [];
+        $a = null;
         $queryString = $this->getKeyWords();
         $links = Link::get()->pluck('link');
         $neededLinks = preg_grep("/($queryString)/i", $links->toArray());
@@ -68,7 +69,6 @@ class BelBagno implements ContentInterface
             $combined['Цена'] = $price;
             $resultArray[] = $combined->toArray();
         }
-
         return $resultArray;
     }
 }

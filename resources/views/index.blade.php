@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title>Главная</title>
+    @livewireStyles
 </head>
 <body>
 <div class="form-inline pull-right">
@@ -37,9 +38,35 @@
                 @endforeach
             </select>
         @endif
-
         <button type="submit" class="btn btn-success">Получить контент</button>
     </form>
 </div>
+<div class="col-md-12">
+    <table class="table text-center">
+        <tbody>
+        <tr>
+            <th>
+                Название
+            </th>
+            <th>
+                Артикул
+            </th>
+            <th>
+                Цена
+            </th>
+        </tr>
+        @foreach($contentList as $contentUnit)
+            <tr>
+                <td>{{ $contentUnit->Название }}</td>
+                <td>{{ $contentUnit->Артикул }}</td>
+                <td>{{ $contentUnit->Цена }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+    {{ $contentList->links() }}
+</div>
+<livewire:counter>
+@livewireScripts
 </body>
 </html>

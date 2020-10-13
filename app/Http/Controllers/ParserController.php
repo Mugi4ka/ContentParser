@@ -10,8 +10,9 @@ use App\Models\Vendor;
 class ParserController extends Controller
 {
     public function index() {
-        $vendorsList = Vendor::all()->sortBy('name');
-        return view('index', compact('vendorsList'));
+        $vendorsList = Vendor::all();
+        $contentList = Content::simplePaginate(10);
+        return view('index', compact('vendorsList', 'contentList'));
     }
 
     public function getSiteMap(XmlLinkRequest $request)
@@ -20,5 +21,4 @@ class ParserController extends Controller
         $siteMap->createSiteMap($request->sitemap);
         return redirect()->route('index');
     }
-
 }

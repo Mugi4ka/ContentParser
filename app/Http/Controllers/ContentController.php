@@ -32,7 +32,7 @@ class ContentController extends Controller
                     });
                 }
             }
-            DB::table('contents')->updateOrInsert(['Артикул' => $product['Артикул']], $product);
+            DB::table('contents')->insertOrIgnore($product);
         }
 
         return redirect()->route('index');
