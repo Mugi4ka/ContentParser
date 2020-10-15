@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.2",
         "orchestra/parser": "^6.0",
+        "spatie/browsershot": "^3.40",
         "spatie/laravel-sitemap": "^5.8"
     },
     "require-dev": {

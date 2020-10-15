@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\BelBagno;
+use App\Classes\Vendors\BelBagno;
+use App\Classes\Vendors\RMS;
 use App\Http\Requests\ContentRequest;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -13,13 +14,13 @@ class ContentController extends Controller
     public function getContent(ContentRequest $request)
     {
         $keyWords = $request->content;
-        $loadContent = new BelBagno($keyWords);
+        $loadContent = new RMS($keyWords);
 //        $loadContent->parseContent($keyWords);
         $products = $loadContent->parseContent();
         foreach ($products as $product) {
-            $vendor = $product['Производитель'];
-            if (DB::table('vendors')->where('name', $vendor)->doesntExist() && !is_null($vendor)) {
-                DB::table('vendors')->insert(['name' => $vendor]);
+            $brand = $product['Производитель'];
+            if (DB::table('brands')->where('name', $brand)->doesntExist() && !is_null($brand)) {
+                DB::table('brands')->insert(['name' => $brand]);
             }
             foreach ($product as $key => $value) {
                 if (!Schema::hasColumn('contents', $key)) {

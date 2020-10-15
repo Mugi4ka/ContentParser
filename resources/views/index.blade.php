@@ -11,62 +11,77 @@
     @livewireStyles
 </head>
 <body>
-<div class="form-inline pull-right">
-    <form method="POST" action="{{ route('get-site-map') }}">
-        @csrf
-        <br>
-        <span>Вставьте ссылку</span>
-        <input class="form-control" type="text" name="sitemap">
-        @error('sitemap')
-        <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <br>
-        <button type="submit" class="btn btn-success">Получить xml</button>
-    </form>
-</div>
-<div class="form-inline pull-right">
-    <form method="POST" action="{{ route('get-content') }}">
-        @csrf
-        <br>
-        <span>Вставьте ключевые слова</span>
-        <input class="form-control" type="text" name="content" placeholder="first|second|third|fourth">
-        <br>
-        @if($vendorsList)
-            <select name="" id="vendorsList">
-                @foreach($vendorsList as $vendor)
-                    <option value="vendor">{{ $vendor->name }}</option>
-                @endforeach
-            </select>
-        @endif
-        <button type="submit" class="btn btn-success">Получить контент</button>
-    </form>
-</div>
-<div class="col-md-12">
-    <table class="table text-center">
-        <tbody>
-        <tr>
-            <th>
-                Название
-            </th>
-            <th>
-                Артикул
-            </th>
-            <th>
-                Цена
-            </th>
-        </tr>
-        @foreach($contentList as $contentUnit)
+<div class="container d-flex flex-column">
+    <div>
+        <form method="POST" action="{{ route('get-site-map') }}">
+            @csrf
+            <br>
+            <span>Вставьте ссылку</span>
+            <input class="form-control" type="text" name="sitemap">
+            @error('sitemap')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+{{--            @if($vendorsList)--}}
+{{--                <select class="form-control col-3" name="vendor_id">--}}
+{{--                    @foreach($vendorsList as $vendor)--}}
+{{--                        <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>--}}
+{{--                    @endforeach--}}
+{{--                </select>--}}
+{{--            @endif--}}
+            <br>
+            <button type="submit" class="btn btn-success">Получить ссылки</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    <div>
+        <form method="POST" action="{{ route('get-content') }}">
+            @csrf
+            <div>
+                <span>Вставьте ключевые слова</span>
+                <input class="form-control" type="text" name="content" placeholder="first|second|third|fourth">
+            </div>
+            <br>
+            @if($brandsList)
+                <select class="form-control col-3" name="brandslist" id="brandslist">
+                    @foreach($brandsList as $brand)
+                        <option value="brand">{{ $brand->name }}</option>
+                    @endforeach
+                </select>
+            @endif
+            <br>
+            <button type="submit" class="btn btn-success">Получить контент</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    <div class="col-md-12">
+        <table class="table text-center">
+            <tbody>
             <tr>
-                <td>{{ $contentUnit->Название }}</td>
-                <td>{{ $contentUnit->Артикул }}</td>
-                <td>{{ $contentUnit->Цена }}</td>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Артикул
+                </th>
+                <th>
+                    Цена
+                </th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
-    {{ $contentList->links() }}
+            @foreach($contentList as $contentUnit)
+                <tr>
+                    <td>{{ $contentUnit->Название }}</td>
+                    <td>{{ $contentUnit->Артикул }}</td>
+                    <td>{{ $contentUnit->Цена }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        {{ $contentList->links() }}
+    </div>
 </div>
 <livewire:counter>
-@livewireScripts
+    @livewireScripts
 </body>
 </html>

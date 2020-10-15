@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ParserController::class, 'index'])->name('index');
 Route::post('getSiteMap', [ParserController::class, 'getSiteMap'])->name('get-site-map');
 Route::post('getContent', [ContentController::class, 'getContent'])->name('get-content');
+Route::post('getLinks', [ParserController::class, 'getLinks'])->name('get-links');
