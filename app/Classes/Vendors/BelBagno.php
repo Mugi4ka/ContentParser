@@ -38,7 +38,7 @@ class BelBagno implements ContentInterface
             $vendor = $document->first('.product-item-detail-properties > div > a::text');
             $properties = array_diff($document->find('.product-item-detail-properties-name::text'),
                 ["Бренд"]);
-            $properties = $name = str_replace('.', '', $properties);
+            $properties = str_replace('.', '', $properties);
             $properties = array_map(function ($properties) {
                 return trim($properties);
             }, $properties);

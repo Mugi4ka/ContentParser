@@ -44,10 +44,10 @@ class RMS implements ContentInterface
                 $linkImage[] = 'https://gutsant.ru' . $rawImageLink;
             }
             $images = implode('#', $linkImage);
-            $combined['Изображение'] = $images;
+            $combined['Изображения'] = $images;
             $combined['Название'] = $title;
             $combined['Артикул'] = $sku;
-            $combined['Производитель'] = "РМС";
+            $combined['Производитель'] = "Blanco";
             $resultArray[] = $combined;
         }
         return $resultArray;

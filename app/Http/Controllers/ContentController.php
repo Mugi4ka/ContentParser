@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Vendors\BelBagno;
+use App\Classes\Vendors\DK;
 use App\Classes\Vendors\RMS;
 use App\Http\Requests\ContentRequest;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,7 +15,7 @@ class ContentController extends Controller
     public function getContent(ContentRequest $request)
     {
         $keyWords = $request->content;
-        $loadContent = new RMS($keyWords);
+        $loadContent = new DK($keyWords);
 //        $loadContent->parseContent($keyWords);
         $products = $loadContent->parseContent();
         foreach ($products as $product) {
