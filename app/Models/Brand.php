@@ -14,6 +14,6 @@ class Brand extends Model
     ];
 
     public function vendors() {
-        $this->hasMany(Brand::class);
+        return $this->hasMany(Brand::class);
     }
 }

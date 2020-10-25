@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\Vendors\BelBagno;
-use App\Classes\Vendors\DK;
-use App\Classes\Vendors\RMS;
+use App\Classes\Vendors\Parly;
 use App\Http\Requests\ContentRequest;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +13,7 @@ class ContentController extends Controller
     public function getContent(ContentRequest $request)
     {
         $keyWords = $request->content;
-        $loadContent = new DK($keyWords);
+        $loadContent = new Parly($keyWords);
 //        $loadContent->parseContent($keyWords);
         $products = $loadContent->parseContent();
         foreach ($products as $product) {
@@ -26,8 +24,8 @@ class ContentController extends Controller
             foreach ($product as $key => $value) {
                 if (!Schema::hasColumn('contents', $key)) {
                     Schema::table('contents', function (Blueprint $table) use ($key) {
-                        if ($key == 'Артикул') {
-                            $table->string('Артикул')->unique();
+                        if ($key == 'Название') {
+                            $table->string('Название')->unique();
                         } else {
                             $table->text($key)->nullable();
                         }

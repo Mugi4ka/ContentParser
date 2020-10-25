@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Classes\Sitemaps\BelbagnoSiteMap;
 use App\Classes\Sitemaps\DKSiteMap;
+use App\Classes\Sitemaps\NiagaraSiteMap;
+use App\Classes\Sitemaps\ParlySiteMap;
 use App\Classes\Sitemaps\RMSSiteMap;
 use App\Http\Requests\XmlLinkRequest;
 use App\Models\Brand;
@@ -22,7 +24,7 @@ class ParserController extends Controller
 
     public function getSiteMap(XmlLinkRequest $request)
     {
-        $siteMap = new DKSiteMap();
+        $siteMap = new ParlySiteMap();
         $siteMap->createSiteMap($request->sitemap);
 //        $siteMap->getLinks();
 //        return redirect()->route('index');
