@@ -37,24 +37,30 @@ class Parly implements ContentInterface
             try {
                 $linkImage = [];
                 $document = new Document($neededLink, true);
-                $name = $document->first('.h1-prod-name::text');
-                $images = $document->find('.thumbnail');
+                $name = $document->first('h1::text');
+                $description = $document->first('.product-anonce::text');
+                $sku = $document->first('.shop2-product-article::text');
+                $vendor = $document->find('.shop-product-options > div')[0];
+                $vendor = $vendor->first('a::text');
+                $images = $document->find('.thumb-item');
                 foreach ($images as $image) {
-                    $rawImageLink = $image->getAttribute('href');
-                    $linkImage[] = $rawImageLink;
+                    $rawImageLink = $image->first('a')->getAttribute('href');
+                    $linkImage[] = 'https://xn-----6kcbafdobhdh0bza2cctab1bzc6grh.xn--p1ai/' . $rawImageLink;
                 }
                 $images = implode('#', $linkImage);
-                $propertiesBlock = $document->find('#tab-specification > table > tbody > tr');
+                $propertiesBlock = $document->find('.shop-product-params > div');
                 foreach ($propertiesBlock as $propertyBlock) {
-                    $property = $propertyBlock->find('td::text')[0];
+                    $property = $propertyBlock->first('.param-title::text');
+                    $value = $propertyBlock->first('.param-body::text');
                     $property = str_replace(' ', '_', $property);
                     $property = str_replace('.', '_', $property);
-                    $value = $propertyBlock->find('td::text')[1];
                     $combined[$property] = $value;
                 }
-                $combined['Изображения'] = $images;
                 $combined['Название'] = $name;
-                $combined['Производитель'] = 'Niagara';
+                $combined['Описание'] = $description;
+                $combined['Производитель'] = $vendor;
+                $combined['Артикул'] = $sku;
+                $combined['Изображения'] = $images;
                 $resultArray[] = $combined;
             } catch (\Exception $e) {
                 continue;

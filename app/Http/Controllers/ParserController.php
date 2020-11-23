@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\Sitemaps\BelbagnoSiteMap;
-use App\Classes\Sitemaps\DKSiteMap;
-use App\Classes\Sitemaps\NiagaraSiteMap;
-use App\Classes\Sitemaps\ParlySiteMap;
-use App\Classes\Sitemaps\RMSSiteMap;
+use App\Classes\Sitemaps\FrapSiteMap;
+use App\Classes\Sitemaps\TerminusSiteMap;
 use App\Http\Requests\XmlLinkRequest;
+use App\Jobs\LinkAfterCreateJob;
 use App\Models\Brand;
 use App\Models\Content;
 use App\Models\Vendor;
-use Illuminate\Http\Request;
 
 class ParserController extends Controller
 {
@@ -24,9 +21,11 @@ class ParserController extends Controller
 
     public function getSiteMap(XmlLinkRequest $request)
     {
-        $siteMap = new ParlySiteMap();
+        $siteMap = new FrapSiteMap();
         $siteMap->createSiteMap($request->sitemap);
+//        LinkAfterCreateJob::dispatch($request->sitemap)->onConnection('database');
+
 //        $siteMap->getLinks();
-//        return redirect()->route('index');
+        return redirect()->route('index');
     }
 }
